@@ -13,7 +13,7 @@
 - regression - farmgate dependent.
 * adjust for auto cor??
 * ARIMA?? - take to tsai?
-** ARCH/GARCH models - jacob 139. http://en.wikipedia.org/wiki/Autoregressive_conditional_heteroskedasticity
+* ARCH/GARCH models - jacob 139. http://en.wikipedia.org/wiki/Autoregressive_conditional_heteroskedasticity
 
 ## optimal hedging ratio
 - use cross hedge from part I, calculate optimal hedging ratio
