@@ -26,4 +26,10 @@
 - look at seasonality - cf corn - affected by weather at planting ( may) and tasseling (??) - spikes.
 
 
+# post meeting 5/30
+- conditional heteroskedastic
+- use diff butter and cream diff proportions at time.
+- ratio as a fiunction of time
+
+
 
