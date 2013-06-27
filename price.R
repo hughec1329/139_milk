@@ -203,3 +203,44 @@ legend(1995,25,
 
 	
 
+# pull out each month and check if cor changes
+
+mon = numeric(12)
+nom = character(12)
+for(i in 1:12){
+	mon[i] = sort(cor(mil[seq(i,60,12),-1])[,1])[3]
+	nom[i] = names(sort(cor(mil[seq(i,60,12),-1])[,1])[3])
+}
+names(mon) = nom
+nom=factor(nom)
+levels(nom) = c("yellow","blue")
+# plot of each omnth and max cor to farmgate price.
+barplot(mon,ylim = c(0,1),col = as.character(nom))
+
+# try combining proportions of commodoties based on inverse sum cor error
+err = cor(mil)[-(1:2),2]
+wt = err / sum(err)                         # weight each comod based on proprtion total error.
+
+preds = apply(mil, 1, function(i) { sum(i[3:5] * wt)})
+plot(mil[,2],col = "red",type = "l")
+lines(preds * 10, type = "b")          # pretty good predicitons
+
+sum(abs(mil[,2] - preds*10)/mil[,2])/length(mil[,2]) # 5.8% MAPE
+
+# now do with dynamic monthly values.
+
+mon = numeric(12)
+nom = character(12)
+wt = data.frame(cheese = numeric(12), butter = numeric(12), egnfdm = numeric(12))
+for(i in 1:12){
+	wt[i,] = cor(mil[seq(i,60,12),-1])[,1][-1]
+}
+wtt = t(apply(wt,1,function(i) { i/sum(i)}))
+preds = rowSums(wtt * mil[,3:5])
+plot(mil[,2],col = "red",type = "l")
+lines(preds * 10, type = "b")          # pretty good predicitons
+
+sum(abs(mil[,2] - preds*10)/mil[,2])/length(mil[,2]) # 6% MAPE
+
+
+		     
