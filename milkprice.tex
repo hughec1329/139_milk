@@ -1,0 +1,147 @@
+\documentclass[11pt]{article}
+\usepackage{listings,fancyhdr,hyperref,graphicx,subfig,appendix}
+\usepackage{fullpage}
+%\usepackage[para]{footmisc}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+\fancyfoot[R]{Page \thepage}
+\fancyfoot[L]{Milk price hedging Stratagies - 20130727 HCrockford}
+\renewcommand{\footrulewidth}{0.4 pt}
+\renewcommand{\headrulewidth}{0 pt}
+\hypersetup{colorlinks = true, linkcolor = blue, citecolor = blue}
+\begin{document}
+
+\begin{flushleft}
+	\vspace*{0.3in}
+	\Huge \textbf{Milk Price Hedging Stratgies}\\
+	\Large \today \\
+	\vspace{0.25in}
+	\textsc{Hugh Crockford}
+	\vspace{0.25in}
+	\hrule
+	\hrule
+	\tableofcontents
+\end{flushleft}
+
+	\vspace{0.75in}
+	%	\renewcommand{\abstractname}{Executive Summary}
+	\begin{abstract}
+		Increasing volatility in prices dariymen receive for outputs and pay for inputs has driven many to examine margin protection stratagies.
+
+		One method of locking in prices for outputs is to lock in margins through entering positions in traded commodities contracts, commonly traded on the CME.
+
+		The problem wiht this strategy is that farmgate price varises across the contry, and there are no contracts that directyly follow farmgate prices.
+
+		This problem can be overcome by assembling a cross hedge consisting of proportions of various traded products, that more closely follows actual farmngate price.
+
+		This stratagey is examined and various methods of selecting proportions of each commodity are examined. This hedging stratagey is backtested using historical data from the CME and actual farmgate prices recieved.
+	\end{abstract}
+
+\newpage
+
+\section{Historical Time Series Data}
+	Variables such as population, income, and CPI are economy wide metrics that can explain some of the variability present in a dataset.
+	Historical pricing information for commodities and financial instruments are also potentially important when developing costing/pricing or demand models.
+	Many exchange sites will offer these data for a hefty subscription fee, however most can be found online for free
+
+	\subsection{Financial Time Series}
+	Some data can be found with a simple Google search, however many sites are of questionable quality or will request payment for full access.
+
+
+	Ycharts \footnote{http://ycharts.com/} appears to be the best bang-for-buck at \$49 month. 
+	This site has many data series for plotting and download, and also includes an Excel add-in with purchase of professional membership.
+	Approximate data can also be extracted from freely available graphs as described in \hyperref[graph]{Appendix C}
+
+
+	A Bloomberg terminal subscription provides access to a plethora of Industry grade datasets, including real-time market data and historical quotes.
+	A subscription to Bloomberg is a minimum \$2000 pcm however many financial business' have a subscription that can be used to download series as needed.
+	The UC Library system unfortunately does not have access to Bloomberg data.
+	Bloomberg also offers an \hyperref[api]{API} \footnote{http://www.openbloomberg.com/open-api/} and an Excel plugin that allows data to be dynamically loaded into a spreadsheet.
+
+	Quandl \footnote{http://www.quandl.com/} appears to be the most useful online data source, with large amounts of quality data freely accessible.
+	It aggregates over 5 million financial, economic, and social datasets from around the web with primary reference information.
+	All datasets are manually accessible and downloadable from the search engine on their homepage, and can also be accessed from within \hyperref[R]{R} using the package 'Quandl', and dynamically added to a spreadsheet via an Excel plugin. 
+
+	% \newpage
+	
+	\subsection{Demographic information}
+
+	Population and demographic information can be found around the web, however the most trusted source is American Census Bureau. 
+	Their website is a little difficult to navigate, even using their search engine, the 'American fact-finder'\footnote{http://factfinder2.census.gov/faces/nav/jsf/pages/index.xhtml}.
+	The most powerful way to access the census data is through their \hyperref[api]{API}, with which quereies can be built and run over multiple geographic areas and variables.
+
+
+	\section{Social Media Data}
+	The explosion in social media has allowed the monitoring of massive amounts of user generated data to generate insights into product choices, pending pandemics, and even stock prices.
+
+	\subsection{Google Trends/Search volumes}
+	Most consumers employ a search engine for everything from what car to buy to finding out if they have a cold or tuberculosis.
+	Tracking search volume across time can provide insights into what the 'crowd' is researching, from which various inferences can be made.
+	The first application of this technology was when Google developed algorithms to predict Flu epidemics based on search volumes, diagnosing epidemics much sooner than the mighty CDC \cite{Ginsberg2009}.
+	Google Trends \footnote{http://www.google.com/trends/explore\#cmpt=q} is a demonstration of this capability available for everyone to use. 
+	Keywords can be compared (e.g. a product and it's competitor) and relative search volumes found, with news items associated with peaks in search volumes. 
+	The data can be downloaded into a CSV file (comma separated value) that is easily loaded into Excel, and queries can be based on location, time frame and category.
+	Google Trends can also be accessed via \hyperref[R]{R} packages 'rGtrend' and 'RGoogleTrends'
+		
+
+	Related to Google trends is Wikipedia page views, which has shown to be indicative of future stock price moves \cite{Moat2013}.
+	Wikipedia page statistics can be accessed manually \footnote{http://stats.grok.se/}, or programatically via a RESTful \hyperref[api]{API} \cite{Peetz}. 
+
+	\subsection{Twitter}
+	Microblogging platforms such as Twitter generate over 400 million data points each day, data that can be analysed to reveal people's brand awareness and perceptions, and can reveal future market events \cite{Ruiz2012}.
+	Many people are actively watching social media and trading on this data, with twitter sentiment analysis shown to beat various metrics in predicting DJIA closing values \cite{Bollen2011}.
+	The importance traders and their algorithmic trading programs place on information from social media was demonstrated in May 2013 when the Associated press' twitter account was hacked and a false tweet reporting the White House had been bombed was released. 
+	The false tweet erased \$200 billion from the US Stock Market in 2 minutes, with the Dow falling almost 150 points and oil and tbond futures following \cite{wsj13}. 
+
+	Historical tweets (last ~7 days) can be accessed from Twitter's \hyperref[api]{API} \footnote{https://dev.twitter.com/docs/api} and interpreted using Natural Language Processing tools.
+	There are also various services that present trending tweets geographically \footnote{https://dev.twitter.com/docs/api}  and by hashtag \footnote{http://www.hashtags.org/}
+
+
+\newpage
+
+\appendix
+\appendixpage
+\addappheadtotoc
+	
+\section{R Resources} \label{R}
+	R is an open source statistical programming language widely used in academia and business.
+	While the initial learning curve can be steep, the scripting and scaling capabilities mean an initial time investment will pay dividends if any serious modelling is being completed.
+	These scripting capabilities also force analysts to explicitly state assumptions, constants and equations, allowing easier oversight and validation when compared to an excel spreadsheet model.
+	Errors in complicated spreadsheets have been implicated in some high profile cases recently (London whale, MF global, Lehman \cite{excel13}) with incorrect cell references or equation errors proving disastrous for all involved. 
+	In addition, many of the techniques discussed in this vignette are implemented directly in R, allowing seamless integration of data collection and modelling.
+
+
+	There are many books available to assist learning R, and a wealth of online information.
+	Coursera \footnote{https://www.coursera.org/} offers a free online course in 'Computing for Data Analysis', and other statistics courses also use R.
+	For those not used to the command line interface, R Studio \footnote{http://www.rstudio.com/} is a free GUI (graphical user interface) which has many tools to assist learning R.
+
+	There are numerous classes on main campus available to learn R, ranging from a basic introduction given in most applied stat classes to more advanced classes that require a solid grasp of the program.
+
+	\section{Web Application Programming Interfaces (API)}\label{api}
+	Many data rich websites recognise navigating menu's and downloading individual files is laborious so have developed web API's to allow scripted access to data.
+	For any project requiring many queries of a database, it is worth scripting the requests (commonly HTTP GET/POST) to allow many iteration's to be run across a range of variables.
+
+
+	The predominant web API is REST (Representational state transfer), which process HTTP requests and commonly returns data as XML or JSON.
+	Each REST server will have its own methods and documentation will be provided to allow scripted query development.
+
+
+	Some API's (e.g. quandl,twitter) will require a registration key so that usage can be tracked.
+
+	\section{Extracting data from a Plot}\label{graph}
+	Often a plot can be found with required time series, however the data used to generate the figure are unavailable.
+	An approximation of underlying data can be generated by reading the position of lines/points versus calibrated known points. 
+	Numerous tools exist to complete this task, the easiest to use being WebPlotDigitizer, an online tool \footnote{http://arohatgi.info/WebPlotDigitizer/}. 
+	A graph is loaded, calibration points selected and their corresponding values entered, then color thresholds set for lines/points.
+	The software then automatically selects points along the line, and the resulting data can be downloaded as a csv.
+	This task can also be completed within \hyperref[R]{R} using the 'digitize' package.
+
+\newpage
+\section{Bibliography}
+\bibliographystyle{unsrt}
+\bibliography{refs}
+\section{Data Downloading HowTo}
+
+\end{document}
+

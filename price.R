@@ -221,6 +221,9 @@ levels(nom) = c("yellow","blue")
 # plot of each omnth and max cor to farmgate price.
 barplot(mon,ylim = c(0,1),col = as.character(nom),main = "max monthly cor")
 
+# need to change proporitons throughout year or will drop off traching fg.
+
+
 # try combining proportions of commodoties based on inverse sum cor error
 err = cor(mil)[-(1:2),2]
 wt = err / sum(err)                         # weight each comod based on proprtion total error.
@@ -248,3 +251,25 @@ sum(abs(mil[,2] - preds*10)/mil[,2])/length(mil[,2]) # 6% MAPE
 
 
 		     
+# lm with month interaction
+milm = mil
+milm$mon = factor(rep(1:12,5))
+mod.lmm = lm(fp ~ cheese + butter + egnfdm + mon + mon*cheese + mon*butter + mon*egnfdm,data = milm)
+summary(mod.lmm)
+preds = predict(mod.lmm)
+
+# try seasons - multiple splits  across 4 or 1
+# try all splits and see which one comes out on top.
+## brute foirse,
+
+
+
+plot(mil[,2],type = "b",main = "lm with month interactions")
+lines(preds , type = "l",col = "red")          # pretty good predicitons
+
+sum(abs(mil[,2] - preds)/mil[,2])/length(mil[,2]) # 1.9% MAPE
+
+
+plot(mod.lmm)
+library(car)
+influencePlot(mod.lmm)
